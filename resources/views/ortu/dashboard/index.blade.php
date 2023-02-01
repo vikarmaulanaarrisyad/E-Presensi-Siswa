@@ -8,5 +8,5 @@
 @endsection
 
 @section('content')
-    {{-- @include('admin.dashboard.index') --}}
+    <h1>Ini Guru</h1>
 @endsection
