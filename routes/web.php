@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{
+    DashboardController,
+    TahunAjaranController,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,8 @@ Route::group([
     Route::group([
         'middleware' => 'role:admin'
     ], function () {
-        //
+        Route::get('tahun-ajaran/data', [TahunAjaranController::class, 'data'])->name('tahun-ajaran.data');
+        Route::resource('tahun-ajaran', TahunAjaranController::class)->except('create','edit');
+        Route::put('/tahun-ajaran/{id}/update-status', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
     });
 });

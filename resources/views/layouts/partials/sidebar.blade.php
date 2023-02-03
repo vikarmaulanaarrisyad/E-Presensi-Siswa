@@ -31,21 +31,41 @@
 
                 @if (auth()->user()->hasRole('admin'))
                     <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-cogs"></i>
                             <p>
-                                Tahun Ajaran
+                                Master Data
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{{ route('tahun-ajaran.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-calendar-alt"></i>
+                                    <p>
+                                        Tahun Ajaran
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('tahun-ajaran.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-calendar-alt"></i>
+                                    <p>
+                                        Semester
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>
+                                        Data Kelas
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link">
-                            <i class="nav-icon fas fa-building"></i>
-                            <p>
-                                Data Kelas
-                            </p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
@@ -62,6 +82,7 @@
                             </p>
                         </a>
                     </li>
+                    
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="nav-icon fas fa-chalkboard-teacher"></i>
