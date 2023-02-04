@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('class_teacher', function (Blueprint $table) {
+        Schema::create('class_schedule', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('teacher_id')->nullable();
-            $table->unsignedBigInteger('class_id')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_teacher');
+        Schema::dropIfExists('class_schedule');
     }
 };

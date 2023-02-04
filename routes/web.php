@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashboardController,
+    KelasController,
     TahunAjaranController,
 };
 
@@ -30,7 +31,9 @@ Route::group([
         'middleware' => 'role:admin'
     ], function () {
         Route::get('tahun-ajaran/data', [TahunAjaranController::class, 'data'])->name('tahun-ajaran.data');
-        Route::resource('tahun-ajaran', TahunAjaranController::class)->except('create','edit');
+        Route::resource('tahun-ajaran', TahunAjaranController::class)->except('create', 'edit');
         Route::put('/tahun-ajaran/{id}/update-status', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
+        Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
+        Route::resource('kelas', KelasController::class)->except('create', 'edit');
     });
 });

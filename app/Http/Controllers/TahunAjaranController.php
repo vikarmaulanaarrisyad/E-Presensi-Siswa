@@ -35,9 +35,9 @@ class TahunAjaranController extends Controller
             })
             ->addColumn('action', function ($query) {
                 return '
-                <button onclick="updateStatus(`' . route('tahun-ajaran.updateStatus', $query->id) . '`, `' . $query->academic_name . ' ' . $query->semester->semester_name . '`)" class="btn btn-link text-warning"><i class="fas fa-eye"></i></button>
-                <button onclick="editForm(`' . route('tahun-ajaran.show', $query->id) . '`)" class="btn btn-link text-primary"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('tahun-ajaran.destroy', $query->id) . '`, `' . $query->academic_name . ' ' . $query->semester->semester_name . '`)" class="btn btn-link text-danger"><i class="fas fa-trash"></i></button>
+                <button onclick="updateStatus(`' . route('tahun-ajaran.updateStatus', $query->id) . '`, `' . $query->academic_name . ' ' . $query->semester->semester_name . '`)" class="btn btn-link text-warning" data-toggle="tooltip" data-placement="top" title="ubah status"><i class="fas fa-paint-brush" ></i></button>
+                <button onclick="editForm(`' . route('tahun-ajaran.show', $query->id) . '`)" class="btn btn-link text-primary" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+                <button onclick="deleteData(`' . route('tahun-ajaran.destroy', $query->id) . '`, `' . $query->academic_name . ' ' . $query->semester->semester_name . '`)" class="btn btn-link text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
                 ';
             })
             ->escapeColumns([])
@@ -67,7 +67,7 @@ class TahunAjaranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors(), 'message' => 'Tidak dapat menyimpan data.'], 422);
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Data ' . $request->academic_name . ' ' . $request->semester->semester_name . ' gagal tersimpan.'], 422);
         }
 
         $data = [
@@ -80,7 +80,7 @@ class TahunAjaranController extends Controller
 
         $tahunAjaran = TahunAjaran::create($data);
 
-        return response()->json(['data' => $tahunAjaran, 'message' => 'Tahun pelajaran berhasil disimpan.']);
+        return response()->json(['data' => $tahunAjaran, 'message' => 'Data ' . $request->academic_name . ' ' . $tahunAjaran->semester->semester_name . ' berhasil disimpan.']);
     }
 
     /**
@@ -118,7 +118,7 @@ class TahunAjaranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors(), 'message' => 'Tidak dapat menyimpan data.'], 422);
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Data ' . $request->academic_name . ' ' . $request->semester->semester_name . ' gagal tersimpan.'], 422);
         }
 
         $data = [
@@ -130,7 +130,7 @@ class TahunAjaranController extends Controller
 
         $tahunAjaran->update($data);
 
-        return response()->json(['data' => $tahunAjaran, 'message' => 'Tahun pelajaran berhasil disimpan.']);
+        return response()->json(['data' => $tahunAjaran, 'message' => 'Data ' . $request->academic_name . ' ' . $tahunAjaran->semester->semester_name . ' berhasil disimpan.']);
     }
 
     /**
@@ -142,11 +142,11 @@ class TahunAjaranController extends Controller
     public function destroy(TahunAjaran $tahunAjaran)
     {
         if ($tahunAjaran->status == 'aktif') {
-            return response()->json(['message' => 'Data tidak dapat dihapus , karena status sedang aktif'], 422);
+            return response()->json(['message' => 'Data ' . $tahunAjaran->academic_name . ' ' . $tahunAjaran->semester->semester_name . ' sedang aktif.'], 422);
         }
 
         $tahunAjaran->delete();
-        return response()->json(['message' => 'Data berhasil dihapus.']);
+        return response()->json(['message' => 'Data ' . $tahunAjaran->academic_name . ' ' . $tahunAjaran->semester->semester_name . ' berhasil dihapus.']);
     }
 
     public function updateStatus($id)
@@ -156,7 +156,7 @@ class TahunAjaranController extends Controller
         $tahunPelajaran = Tahunajaran::find($id);
 
         if ($tahunPelajaran->status != 'tidak aktif') {
-            return response()->json(['message' => 'Tahun pelajaran berstatus aktif'], 401);
+            return response()->json(['message' => 'Data ' . $tahunPelajaran->academic_name . ' ' . $tahunPelajaran->semester->semester_name . ' sudah aktif.'], 401);
         }
 
         foreach ($tahunAjaran as $item) {
@@ -165,6 +165,6 @@ class TahunAjaranController extends Controller
 
         $tahunPelajaran->update(['status' => 'aktif']);
 
-        return response()->json(['message' => 'Tahun pelajaran berhasil diaktifkan']);
+        return response()->json(['message' => 'Data ' . $tahunPelajaran->academic_name . ' ' . $tahunPelajaran->semester->semester_name . '  aktif.']);
     }
 }

@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="academic_name">Tahun Pelajaran</label>
                 <input type="text" name="academic_name" id="academic_name" class="form-control"
-                    placeholder="Tahun Pelajaran 2022/2023">
+                    placeholder="Tahun Pelajaran 2022/2023" autocomplete="off">
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="form-group">
                 <label for="semester_id">Semester</label>
-                <select name="semester_id" id="semester_id" class="form-control">
+                <select name="semester_id" id="semester_id" class="form-control" autocomplete="off">
                     <option disabled selected>Pilih Semester</option>
                     @foreach ($semesters as $semester)
                         <option value="{{ $semester->id }}">{{ $semester->semester_name }}</option>

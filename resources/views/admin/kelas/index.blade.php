@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Tahun Pelajaran')
+@section('title', 'Data Kelas')
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Tahun Pelajaran</li>
+    <li class="breadcrumb-item active">Data Kelas</li>
 @endsection
 
 @section('content')
@@ -13,18 +13,17 @@
         <div class="col-lg-12 col-md-12 col-12">
             <x-card>
                 <x-slot name="header">
-                    <button onclick="addForm(`{{ route('tahun-ajaran.store') }}`)" class="btn btn-sm btn-primary"><i
+                    <button onclick="addForm(`{{ route('kelas.store') }}`)" class="btn btn-sm btn-primary"><i
                             class="fas fa-plus-circle"></i> Tambah Data</button>
                 </x-slot>
                 <x-table>
                     <x-slot name="thead">
                         <tr>
                             <th width="5%">No</td>
-                            <th>Tahun Pelajaran</td>
-                            <th>Semester</td>
-                            <th>Tanggal Mulai</td>
-                            <th>Tanggal Selesai</td>
-                            <th>Status</td>
+                            <th>Rombel</td>
+                            <th>Kelas</td>
+                            <th>Jumlah Siswa</td>
+                            <th>Wali Kelas</td>
                             <th>Aksi</td>
                         </tr>
                     </x-slot>
@@ -32,11 +31,10 @@
             </x-card>
         </div>
     </div>
-    @include('admin.tahunpelajaran.form')
+    @include('admin.kelas.form')
 @endsection
 
 @includeIf('layouts.includes.datatable')
-@includeIf('layouts.includes.datepicker')
 
 @push('scripts')
     <script>
@@ -48,26 +46,23 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('tahun-ajaran.data') }}'
+                url: '{{ route('kelas.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
                     searchable: false
                 },
                 {
-                    data: 'academic_name'
+                    data: 'class_rombel'
                 },
                 {
-                    data: 'semester'
+                    data: 'class_name'
                 },
                 {
-                    data: 'academic_start'
+                    data: 'jumlah_siswa'
                 },
                 {
-                    data: 'academic_end'
-                },
-                {
-                    data: 'status'
+                    data: 'wali_kelas'
                 },
                 {
                     data: 'action',
@@ -77,7 +72,7 @@
             ]
         });
 
-        function addForm(url, title = "Tambah Tahun Pelajaran") {
+        function addForm(url, title = "Tambah Data Kelas") {
             $(modal).modal('show');
             $(`${modal} .modal-title`).text(title);
             $(`${modal} form`).attr('action', url);
@@ -86,7 +81,7 @@
             resetForm(`${modal} form`);
         }
 
-        function editForm(url, title = 'Edit Tahun Pelajaran') {
+        function editForm(url, title = 'Edit Data Kelas') {
             $.get(url)
                 .done(response => {
                     $(`${modal}`).modal('show');
@@ -145,7 +140,7 @@
                 });
         }
 
-        function deleteData(url, name) {
+        function deleteData(url, name, rombel) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',

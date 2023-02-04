@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
-            SemesterTableSeeder::class,
             UserTableSeeder::class,
+            SemesterTableSeeder::class,
+            TahunPelajaranTableSeeder::class,
         ]);
     }
 }

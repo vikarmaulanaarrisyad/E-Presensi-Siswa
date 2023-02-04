@@ -1,4 +1,4 @@
-<table {{ $attributes->merge(['class' => 'table table-striped']) }}>
+<table {{ $attributes->merge(['class' => 'table table-striped dt-responsive table-responsive nowrap']) }}>
     @isset($thead)
         <thead class="bg-primary">
             {{ $thead }}
