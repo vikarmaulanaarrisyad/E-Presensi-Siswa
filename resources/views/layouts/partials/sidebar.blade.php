@@ -50,7 +50,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link">
+                        <a href="{{ route('kesiswaan.index') }}"
+                            class="nav-link {{ routeActive(['kesiswaan.index']) }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Data Siswa
