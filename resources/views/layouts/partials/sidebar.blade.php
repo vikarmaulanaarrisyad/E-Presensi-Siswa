@@ -51,7 +51,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('kesiswaan.index') }}"
-                            class="nav-link {{ routeActive(['kesiswaan.index']) }}">
+                            class="nav-link {{ routeActive(['kesiswaan.index','kesiswaan.detail']) }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Data Siswa

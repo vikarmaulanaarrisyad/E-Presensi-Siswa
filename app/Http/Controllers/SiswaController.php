@@ -96,7 +96,7 @@ class SiswaController extends Controller
     {
         $siswa = $this->getSiswaId($id);
 
-        return $siswa;
+        return view ('admin.siswa.detail', compact('siswa'));
     }
 
     /**
