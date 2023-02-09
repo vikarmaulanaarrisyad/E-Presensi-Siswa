@@ -57,12 +57,27 @@
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-striped">
-                                <tr>
-                                    <th>No</td>
-                                    <th>Nama Lengkap</td>
-                                    <th>NISN</td>
-                                    <th>Aksi</th>
-                                </tr>
+                                <thead>
+
+                                    <tr>
+                                        <th>No</td>
+                                        <th>Nama Lengkap</td>
+                                        <th>NISN</td>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($kelasSiswa as $siswa)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $siswa->student_name }}</td>
+                                            <td>{{ $siswa->student_identification_school }}</td>
+                                            <td>
+                                                -
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>

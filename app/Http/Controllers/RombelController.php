@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class RombelController extends Controller
@@ -93,7 +94,12 @@ class RombelController extends Controller
     {
         $kelas = Kelas::findOrfail($id);
 
-        return view('admin.rombel.detail', compact('kelas'));
+        $kelasSiswa = Siswa::whereHas('class_student', function (Builder $query) use ($id) {
+            $query->where('class_id', $id);
+        })->get();
+
+
+        return view('admin.rombel.detail', compact('kelas', 'kelasSiswa'));
     }
 
     /**

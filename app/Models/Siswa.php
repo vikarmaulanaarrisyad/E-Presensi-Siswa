@@ -14,6 +14,11 @@ class Siswa extends Model
         return $this->belongsTo(TahunAjaran::class, 'academic_id', 'id');
     }
 
+    public function class_student()
+    {
+        return $this->belongsToMany(Kelas::class, 'class_student', 'student_id', 'class_id')->withTimestamps();
+    }
+
     /**
      * Scope a query to only include active users.
      *
