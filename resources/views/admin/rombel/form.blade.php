@@ -13,6 +13,7 @@
                             <input type="checkbox" name="select_all" id="select_all">
                         </td>
                         <td>No</td>
+                        <td>Nama Siswa</td>
                         <td>NISN</td>
                     </tr>
                 </thead>

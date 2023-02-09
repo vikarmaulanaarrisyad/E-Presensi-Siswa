@@ -46,16 +46,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 mt-3">
                             <hr>
                             <h5 class="text-bold">
-                                TOTAL SISWA 26/28
+                                TOTAL SISWA {{ $kelasSiswa->count() }}/28
                             </h5>
                         </div>
                     </div>
-                    <hr>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 mt-5">
                             <table class="table table-striped">
                                 <thead>
 
@@ -163,7 +162,7 @@
                             timer: 2000
                         })
                     }
-                    table.ajax.reload();
+                    window.location.reload();
                 })
                 .fail(errors => {
                     Swal.fire({

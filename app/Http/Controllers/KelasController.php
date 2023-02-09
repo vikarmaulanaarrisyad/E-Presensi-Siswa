@@ -79,7 +79,6 @@ class KelasController extends Controller
         $kelas = Kelas::create($data);
 
         $kelas->class_teacher()->attach(1);
-        $kelas->class_student()->attach(NULL);
 
         return response()->json(['data' => $kelas, 'message' => 'Data ' . $request->class_name . ' ' .  $request->class_rombel . ' berhasil disimpan.']);
     }

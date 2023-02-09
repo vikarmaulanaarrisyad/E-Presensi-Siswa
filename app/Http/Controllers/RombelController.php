@@ -31,6 +31,7 @@ class RombelController extends Controller
     {
         $tahunPelajaranAktif = $this->tahunPelajaranAktif();
 
+
         $query = Kelas::orderBy('class_name', 'ASC')
             ->where('academic_id', $tahunPelajaranAktif);
 
@@ -40,7 +41,7 @@ class RombelController extends Controller
                 return '-';
             })
             ->editColumn('jumlah_siswa', function ($query) {
-                return '-';
+                return $query->class_student->count() . ' Siswa';
             })
             ->editColumn('kelebihan_siswa', function ($query) {
                 return '-';
@@ -132,17 +133,19 @@ class RombelController extends Controller
 
     public function getAllSiswa()
     {
-        $query = Siswa::active()->get();
+        $query = Siswa::with('class_student')->active()
+            ->whereDoesntHave('class_student')
+            ->get();
 
         return datatables($query)
             ->addIndexColumn()
-            ->addColumn('siswa_id', function ($query) {
+            ->editColumn('siswa_id', function ($query) {
                 return '<input type="checkbox" name="siswa_id[]" id="siswa" value="' . $query->id . '`">';
             })
-            ->addColumn('nama_siswa', function ($query) {
+            ->editColumn('nama_siswa', function ($query) {
                 return $query->student_name;
             })
-            ->addColumn('nisn_siswa', function ($query) {
+            ->editColumn('nisn_siswa', function ($query) {
                 return $query->student_identification_school;
             })
             ->escapeColumns([])
