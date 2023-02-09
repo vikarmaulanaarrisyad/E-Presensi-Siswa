@@ -51,10 +51,19 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('kesiswaan.index') }}"
-                            class="nav-link {{ routeActive(['kesiswaan.index','kesiswaan.detail']) }}">
+                            class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Data Siswa
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('rombel.index') }}"
+                            class="nav-link {{ routeActive(['rombel.index', 'rombel.detail']) }}">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Rombongan Belajar
                             </p>
                         </a>
                     </li>

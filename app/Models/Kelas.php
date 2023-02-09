@@ -21,6 +21,6 @@ class Kelas extends Model
 
     public function class_student()
     {
-        return $this->belongsToMany(Siswa::class, 'class_student', 'student_id', 'class_id')->withTimestamps();
+        return $this->belongsToMany(Siswa::class, 'class_student', 'class_id', 'student_id')->withTimestamps();
     }
 }

@@ -1,31 +1,40 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Siswa')
+@section('title', 'Rombongan Belajar')
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Daftar Siswa</li>
+    <li class="breadcrumb-item active">Rombongan Belajar</li>
 @endsection
 
 @section('content')
     <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-success">
+                <h5>
+                    <div class="i fas fa-bullhorn"></div> <strong>Informasi</strong>
+                </h5>
+                <p class="text-justif">
+                    Kelebihan siswa adalah kelebihan siswa/batas maksimal siswa dalam 1 rombel (SMP = 28 Siswa). Jumlah
+                    siswa adalah jumlah siswa dalam rombel/kapasitas kelas
+                </p>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <x-card>
-                <x-slot name="header">
-                    <button onclick="addForm(`{{ route('kesiswaan.store') }}`)" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus-circle"></i> Tambah Data</button>
-                </x-slot>
+
                 <x-table>
                     <x-slot name="thead">
                         <tr>
                             <th width="5%">No</td>
-                            <th>Nama Lengkap</td>
-                            <th>NISN</td>
-                            <th>Tanggal Lahir</td>
+                            <th>Rombel</td>
                             <th>Kelas</td>
-                            <th>Umur</td>
-                            <th>Status</td>
+                            <th>Wali Kelas</td>
+                            <th>Jumlah Siswa</td>
+                            <th>Kelebihan Siswa</td>
                             <th>Aksi</td>
                         </tr>
                     </x-slot>
@@ -33,11 +42,10 @@
             </x-card>
         </div>
     </div>
-    @include('admin.siswa.form')
+    @include('admin.kelas.form')
 @endsection
 
 @includeIf('layouts.includes.datatable')
-@include('layouts.includes.datepicker')
 
 @push('scripts')
     <script>
@@ -49,29 +57,26 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('kesiswaan.data') }}'
+                url: '{{ route('rombel.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
                     searchable: false
                 },
                 {
-                    data: 'student_name'
+                    data: 'class_rombel'
                 },
                 {
-                    data: 'student_identification_school'
+                    data: 'class_name'
                 },
                 {
-                    data: 'date_birth'
+                    data: 'wali_kelas'
                 },
                 {
-                    data: 'kelas'
+                    data: 'jumlah_siswa'
                 },
                 {
-                    data: 'umur'
-                },
-                {
-                    data: 'status'
+                    data: 'kelebihan_siswa'
                 },
                 {
                     data: 'action',
@@ -81,7 +86,7 @@
             ]
         });
 
-        function addForm(url, title = "Tambah Data Siswa") {
+        function addForm(url, title = "Tambah Data Kelas") {
             $(modal).modal('show');
             $(`${modal} .modal-title`).text(title);
             $(`${modal} form`).attr('action', url);
@@ -90,7 +95,7 @@
             resetForm(`${modal} form`);
         }
 
-        function editForm(url, title = 'Edit Data Siswa') {
+        function editForm(url, title = 'Edit Data Kelas') {
             $.get(url)
                 .done(response => {
                     $(`${modal}`).modal('show');
@@ -149,7 +154,7 @@
                 });
         }
 
-        function deleteData(url, name) {
+        function deleteData(url, name, rombel) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',

@@ -6,6 +6,7 @@ use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class SiswaController extends Controller
 {
@@ -23,16 +24,28 @@ class SiswaController extends Controller
 
     public function data(Request $request)
     {
-        $query = Siswa::all();
+        $query = Siswa::active()->get();
 
         return datatables($query)
             ->addIndexColumn()
+            ->editColumn('date_birth', function ($query) {
+                return $query->place_birth . ', ' . tanggal_indonesia($query->date_birth);
+            })
+            ->editColumn('kelas', function ($query) {
+                return '-';
+            })
+            ->editColumn('umur', function ($query) {
+                return  Carbon::parse($query->date_birth)->age;
+            })
+            ->editColumn('status', function ($query) {
+                return '<span class="badge badge-' . $query->statusColor() . '">' . $query->statusText() . '</span>';
+            })
             ->editColumn('action', function ($query) {
                 return '
                 <a href="' . route('kesiswaan.detail', $query->id) . '"  class="btn btn-link text-warning" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-eye" ></i></a>
                 <button onclick="editForm(`' . route('kesiswaan.show', $query->id) . '`)" class="btn btn-link text-primary" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('kesiswaan.destroy', $query->id) . '`, `' . $query->student_name . '`)" class="btn btn-link text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
                 ';
+                // <button onclick="deleteData(`' . route('kesiswaan.destroy', $query->id) . '`, `' . $query->student_name . '`)" class="btn btn-link text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
             })
             ->escapeColumns([])
             ->make(true);
@@ -96,7 +109,7 @@ class SiswaController extends Controller
     {
         $siswa = $this->getSiswaId($id);
 
-        return view ('admin.siswa.detail', compact('siswa'));
+        return view('admin.siswa.detail', compact('siswa'));
     }
 
     /**
