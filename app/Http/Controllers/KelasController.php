@@ -153,6 +153,7 @@ class KelasController extends Controller
 
         $kelas->delete();
         $kelas->class_teacher()->detach();
+        $kelas->class_student()->detach();
 
 
         return response()->json(['message' => 'Data ' . $kelas->class_name . ' ' . $kelas->class_rombel . ' berhasil dihapus.']);

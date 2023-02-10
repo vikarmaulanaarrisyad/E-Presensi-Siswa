@@ -52,5 +52,6 @@ Route::group([
         Route::resource('rombel', RombelController::class)->except('create', 'edit');
         Route::get('/rombel/rombel-detail/{id}', [RombelController::class, 'detail'])->name('rombel.detail');
         Route::post('/rombel/{id}/tambah-siswa/', [RombelController::class, 'siswaStore'])->name('rombel.tambah.siswa');
+        Route::delete('/rombel/delete-siswa/{id}', [RombelController::class, 'siswaDestroy'])->name('rombel.siswa.destroy');
     });
 });

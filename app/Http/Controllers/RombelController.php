@@ -63,11 +63,13 @@ class RombelController extends Controller
      */
     public function siswaStore(Request $request, $id)
     {
-
         $kelas = Kelas::findOrfail($id);
 
         foreach ($request->siswa_id as $key => $siswa) {
             $siswas = Siswa::find($siswa);
+            $siswas->update([
+                'academic_id' => $this->tahunPelajaranAktif()
+            ]);
             $kelas->class_student()->attach($siswas);
         }
 
@@ -124,6 +126,8 @@ class RombelController extends Controller
     public function destroy($id)
     {
         //
+
+
     }
 
     public function tahunPelajaranAktif()
@@ -133,9 +137,21 @@ class RombelController extends Controller
 
     public function getAllSiswa()
     {
-        $query = Siswa::with('class_student')->active()
-            ->whereDoesntHave('class_student')
-            ->get();
+
+        $tahunPelajaranAktif = $this->tahunPelajaranAktif();
+
+        $query = Siswa::whereHas('academic', function ($query) use ($tahunPelajaranAktif) {
+            $query->where('academic_id', '!=', $tahunPelajaranAktif);
+        })->get();
+
+
+        // $query = Siswa::with('class_student')
+        //     ->active()
+        //     ->whereDoesntHave('class_student')
+        //     ->get();
+
+
+        // bagaimana logic untuk menambaha siswa jika tahun ajaran berubah berdasarkan kelas
 
         return datatables($query)
             ->addIndexColumn()
@@ -150,5 +166,14 @@ class RombelController extends Controller
             })
             ->escapeColumns([])
             ->make(true);
+    }
+
+    public function siswaDestroy($id)
+    {
+        $siswa = Siswa::findOrfail($id);
+
+        $siswa->class_student()->detach();
+
+        return response()->json(['data' => $siswa, 'message' => 'Data siswa berhasil dikeluarkan']);
     }
 }

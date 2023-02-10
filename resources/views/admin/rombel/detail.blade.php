@@ -19,9 +19,7 @@
                             class="btn btn-primary btn-sm">
                             <i class="fas fa-plus-circle"></i> Tambah Siswa
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i> Hapus Rombel
-                        </button>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -72,7 +70,10 @@
                                             <td>{{ $siswa->student_name }}</td>
                                             <td>{{ $siswa->student_identification_school }}</td>
                                             <td>
-                                                -
+                                                <button
+                                                    onclick="deleteData(`{{ route('rombel.siswa.destroy', $siswa->id) }}`, `{{ $siswa->student_name }}`)"
+                                                    class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>
+                                                    Hapus</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -130,7 +131,6 @@
 
 
         function submitForm(originalForm) {
-
             if ($('input:checked').length < 1) {
                 Swal.fire({
                     icon: 'error',
@@ -179,6 +179,59 @@
                     }
                 });
         }
+
+        function deleteData(url, name, rombel) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true,
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Perhatian',
+                text: 'Apakah anda yakin ingin menghapus data ' + name +
+                    ' ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: 'rgb(48, 133, 214)',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post(url, {
+                            '_method': 'delete'
+                        })
+                        .done(response => {
+                            if (response.status = 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                })
+                                window.location.reload();
+
+                            }
+                        })
+                        .fail(errors => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: errors.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            window.location.reload();
+
+                        });
+                }
+            })
+        }
+
 
         $('[name=select_all]').on('click', function() {
             $(':checkbox').prop('checked', this.checked);
