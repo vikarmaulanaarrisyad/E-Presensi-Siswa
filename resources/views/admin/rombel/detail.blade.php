@@ -47,7 +47,7 @@
                         <div class="col-md-12 mt-3">
                             <hr>
                             <h5 class="text-bold">
-                                TOTAL SISWA {{ $kelasSiswa->count() }}/28
+                                TOTAL SISWA {{ $kelasSiswa->count() }}/{{ $kelas->capacity }}
                             </h5>
                         </div>
                     </div>

@@ -41,7 +41,7 @@ class RombelController extends Controller
                 return '-';
             })
             ->editColumn('jumlah_siswa', function ($query) {
-                return $query->class_student->count() . ' Siswa';
+                return $query->class_student->count() . '/'. $query->capacity . ' Siswa';
             })
             ->editColumn('kelebihan_siswa', function ($query) {
                 return '-';
@@ -140,9 +140,12 @@ class RombelController extends Controller
 
         $tahunPelajaranAktif = $this->tahunPelajaranAktif();
 
+
         $query = Siswa::whereHas('academic', function ($query) use ($tahunPelajaranAktif) {
-            $query->where('academic_id', '!=', $tahunPelajaranAktif);
-        })->get();
+            $query->where('academic_id',  $tahunPelajaranAktif);
+        })
+            ->whereDoesntHave('class_student')
+            ->get();
 
 
         // $query = Siswa::with('class_student')
@@ -150,8 +153,6 @@ class RombelController extends Controller
         //     ->whereDoesntHave('class_student')
         //     ->get();
 
-
-        // bagaimana logic untuk menambaha siswa jika tahun ajaran berubah berdasarkan kelas
 
         return datatables($query)
             ->addIndexColumn()

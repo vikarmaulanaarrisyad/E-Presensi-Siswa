@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('classes', function (Blueprint $table) {
             $table->string('class_rombel')->after('class_name');
             $table->unsignedBigInteger('academic_id')->after('class_rombel');
+            $table->integer('capacity')->default(0);
 
             $table->foreign('academic_id')
                 ->references('id')
@@ -34,6 +35,7 @@ return new class extends Migration
     {
         Schema::table('classes', function (Blueprint $table) {
             $table->dropColumn('class_rombel');
+            $table->dropColumn('capacity');
             $table->dropForeign('classes_academic_id_foreign');
         });
     }

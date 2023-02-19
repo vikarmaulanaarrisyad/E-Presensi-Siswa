@@ -25,6 +25,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="form-group">
+                <label for="capacity">Kapasitas Kelas</label>
+                <input type="number" name="capacity" id="capacity" class="form-control" autocomplete="off"
+                    min="0">
+            </div>
+        </div>
+    </div>
+
     <x-slot name="footer">
         <button type="button" onclick="submitForm(this.form)" class="btn btn-sm btn-primary"><i
                 class="fas fa-save"></i>

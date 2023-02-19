@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\SiswaImport;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -24,7 +27,18 @@ class SiswaController extends Controller
 
     public function data(Request $request)
     {
-        $query = Siswa::active()->get();
+        // $query = Siswa::with('class_student')->active()->get();
+        $tahunPelajaranAktif = $this->tahunPelajaranAktif();
+
+        $query = Siswa::with('class_student')
+            // ->active()
+            ->whereHas('class_student', function ($query) {
+                $query->where('class_id', '!=', 0);
+            })
+            ->where('academic_id', $tahunPelajaranAktif)
+            ->get();
+
+        // dd($query);
 
         return datatables($query)
             ->addIndexColumn()
@@ -32,7 +46,7 @@ class SiswaController extends Controller
                 return $query->place_birth . ', ' . tanggal_indonesia($query->date_birth);
             })
             ->editColumn('kelas', function ($query) {
-                return '-';
+                return $query->class_student->first()->class_name . ' ' . $query->class_student->first()->class_rombel;
             })
             ->editColumn('umur', function ($query) {
                 return  Carbon::parse($query->date_birth)->age;
@@ -41,11 +55,22 @@ class SiswaController extends Controller
                 return '<span class="badge badge-' . $query->statusColor() . '">' . $query->statusText() . '</span>';
             })
             ->editColumn('action', function ($query) {
-                return '
-                <a href="' . route('kesiswaan.detail', $query->id) . '"  class="btn btn-link text-warning" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-eye" ></i></a>
-                <button onclick="editForm(`' . route('kesiswaan.show', $query->id) . '`)" class="btn btn-link text-primary" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+                $aksi = '';
+
+                if ($query->status == 'aktif') {
+                    $aksi = '
+                      <a href="' . route('kesiswaan.detail', $query->id) . '"  class="btn btn-link text-warning" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-eye" ></i></a>
+                     <button onclick="editForm(`' . route('kesiswaan.show', $query->id) . '`)" class="btn btn-link text-primary" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt"></i></button>
                 ';
-                // <button onclick="deleteData(`' . route('kesiswaan.destroy', $query->id) . '`, `' . $query->student_name . '`)" class="btn btn-link text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+                } else {
+                    $aksi .= '
+                      <a href="' . route('kesiswaan.detail', $query->id) . '"  class="btn btn-link text-warning" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-eye" ></i></a>
+                     <button onclick="editForm(`' . route('kesiswaan.show', $query->id) . '`)" class="btn btn-link text-primary" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+                      <button onclick="deleteData(`' . route('kesiswaan.destroy', $query->id) . '`, `' . $query->student_name . '`)" class="btn btn-link text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+                ';
+                }
+
+                return $aksi;
             })
             ->escapeColumns([])
             ->make(true);
@@ -160,13 +185,42 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        // $siswa = $this->getSiswaId($id);
+        $siswa = $this->getSiswaId($id);
 
-        // if ($siswa->status == 'aktif') {
-        //     return response()->json(['message' => 'Data ' . $siswa->student_name . ' ' . $siswa->student_identification_school . ' gagal dihapus.'], 422);
-        // }
+        if ($siswa->status == 'aktif') {
+            return response()->json(['message' => 'Data ' . $siswa->student_name . ' ' . $siswa->student_identification_school . ' gagal dihapus.'], 422);
+        }
+
+        $siswa->delete();
+        return response()->json(['message' => 'Data ' . $siswa->student_name . ' ' . $siswa->student_identification_school . ' berhasil dihapus.'], 422);
+    }
 
 
+    public function importSiswaExcel(Request $request)
+    {
+        // validasi
+        $validator = Validator::make($request->all(), [
+            'import_siswa' => 'required|mimes:csv,xls,xlsx',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Gagal mengupload file'], 422);
+        }
+
+        // menangkap file exvel
+        $file = $request->file('import_siswa');
+
+        // membuat nama file
+        $fileName = auth()->user()->name . '_' . $file->getClientOriginalName();
+
+        // upload ke folder public
+        $file->move('file_siswa', $fileName);
+
+
+        Excel::import(new SiswaImport, public_path('/file_siswa/' . $fileName));
+
+
+        return redirect()->back();
     }
 
     public function tahunPelajaranAktif()

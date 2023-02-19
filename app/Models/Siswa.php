@@ -46,7 +46,7 @@ class Siswa extends Model
                 $text = 'Pindah Sekolah';
                 break;
             case 'keluar':
-                $text = 'Putus Sekolah';
+                $text = 'Drop Out';
                 break;
             default:
                 break;
@@ -67,7 +67,7 @@ class Siswa extends Model
                 $color = 'warning';
                 break;
             case 'pindah sekolah':
-                $color = 'purple';
+                $color = 'dark';
                 break;
             case 'keluar':
                 $color = 'danger';

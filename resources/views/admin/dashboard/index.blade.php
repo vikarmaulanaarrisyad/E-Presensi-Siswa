@@ -8,5 +8,5 @@
 @endsection
 
 @section('content')
-    {{-- @include('admin.dashboard.index') --}}
+  @include('admin.dashboard._smallBox')
 @endsection

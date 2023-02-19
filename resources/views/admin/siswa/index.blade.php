@@ -8,13 +8,35 @@
 @endsection
 
 @section('content')
+    @if ($errors->any())
+        <div class="row">
+            <div class="col-12">
+                <div class="callout callout-danger">
+                    <h5>Pesan Kesalahan</h5>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
-
         <div class="col-lg-12 col-md-12 col-12">
             <x-card>
                 <x-slot name="header">
-                    <button onclick="addForm(`{{ route('kesiswaan.store') }}`)" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus-circle"></i> Tambah Data</button>
+                    <div class="btn-group">
+
+                        <button onclick="addForm(`{{ route('kesiswaan.store') }}`)" class="btn btn-sm btn-primary"><i
+                                class="fas fa-plus-circle"></i> Tambah Data</button>
+
+                        <button onclick="importData(`{{ route('kesiswaan.import.excel') }}`)"
+                            class="btn btn-success btn-sm">
+                            <i class="fas fa-file-excel"></i>
+                            Import
+                            Data</button>
+                    </div>
                 </x-slot>
                 <x-table>
                     <x-slot name="thead">
@@ -34,6 +56,7 @@
         </div>
     </div>
     @include('admin.siswa.form')
+    @include('admin.siswa.form_import');
 @endsection
 
 @includeIf('layouts.includes.datatable')
@@ -43,6 +66,7 @@
     <script>
         let modal = '#modal-form';
         let table, start, end;
+        let siswaModal = '#modalSiswaImport';
 
         table = $('.table').DataTable({
             processing: true,
@@ -246,6 +270,12 @@
                         });
                 }
             });
+        }
+
+        // fungsi untuk menampilkan modal import data excel
+        function importData(url, title = 'Tools Import Data Peserta Didik') {
+            $(siswaModal).modal('show');
+            $(`${siswaModal} .modal-title`).text(title);
         }
     </script>
 @endpush

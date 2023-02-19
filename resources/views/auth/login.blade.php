@@ -1,48 +1,55 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+@extends('layouts.guest')
 
-        <x-jet-validation-errors class="mb-4" />
+@section('title', 'Halaman Login')
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
+@section('content')
+    <div class="card card-outline card-warning">
+        <div class="card-header text-center">
+            <img src="{{ asset('images/img/logo.jpg') }}" alt="img-logo" class="img-fluid" width="120"> <br>
+            <a href="{{ route('login') }}" class="h2">{{ config('app.name') }}</a>
+        </div>
+        <div class="card-body">
+            <p class="text-center">Silakan inputkan Username dan Password!</p>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div>
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-jet-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-jet-button class="ml-4">
-                    {{ __('Log in') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+            <form action="{{ route('login') }}" method="post">
+                @csrf
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control email  @error('email') is-invalid @enderror"
+                        name="email" id="email" autocomplete="off" value="{{ old('email') }}"
+                        placeholder="email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" class="form-control password" id="password"
+                        placeholder="Password" autocomplete="off">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="form-checkbok" class="form-checkbok">
+                            <label for="form-checkbok">
+                                <p>Show Password</p>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="social-auth-links text-center mt-2 mb-3">
+                    <button onclick="submitForm(this.form)" class="btn btn-block btn-primary btn-login">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.card-body -->
+    </div>
+@endsection

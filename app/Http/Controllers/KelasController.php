@@ -36,7 +36,7 @@ class KelasController extends Controller
         return datatables($query)
             ->addIndexColumn()
             ->editColumn('jumlah_siswa', function ($query) {
-                return 0;
+                return 0 . '/'. $query->capacity . ' Siswa';
             })
             ->editColumn('wali_kelas', function ($query) {
                 return 'Belum memiliki wali kelas';
@@ -63,6 +63,7 @@ class KelasController extends Controller
             'class_name' => 'required|min:3',
             'class_rombel' => 'required|min:1',
             'academic_id' => 'required',
+            'capacity' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -73,7 +74,8 @@ class KelasController extends Controller
             'class_name' => $request->class_name,
             'class_rombel' => $request->class_rombel,
             'class_code' => 'class_code_' . rand(99999, 10000),
-            'academic_id' => $request->academic_id
+            'academic_id' => $request->academic_id,
+            'capacity' => $request->capacity,
         ];
 
         $kelas = Kelas::create($data);
@@ -122,6 +124,7 @@ class KelasController extends Controller
             'class_name' => 'required|min:3',
             'class_rombel' => 'required|min:1',
             'academic_id' => 'required',
+            'capacity' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -131,7 +134,8 @@ class KelasController extends Controller
         $data = [
             'class_name' => $request->class_name,
             'class_rombel' => $request->class_rombel,
-            'academic_id' => $request->academic_id
+            'academic_id' => $request->academic_id,
+            'capacity' => $request->capacity
         ];
 
         $kelas->update($data);

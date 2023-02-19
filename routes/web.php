@@ -45,6 +45,7 @@ Route::group([
         Route::get('kesiswaan/data', [SiswaController::class, 'data'])->name('kesiswaan.data');
         Route::resource('kesiswaan', SiswaController::class)->except('create', 'edit');
         Route::get('kesiswaan/kesiswaan-detail/{id}', [SiswaController::class, 'detail'])->name('kesiswaan.detail');
+        Route::post('/kesiswaan/upload_excel', [SiswaController::class, 'importSiswaExcel'])->name('kesiswaan.import.excel');
 
         // Rombel
         Route::get('rombel/data', [RombelController::class, 'data'])->name('rombel.data');

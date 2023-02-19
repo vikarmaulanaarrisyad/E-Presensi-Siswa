@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             SemesterTableSeeder::class,
             TahunPelajaranTableSeeder::class,
+            StudentTableSeeder::class,
         ]);
     }
 }

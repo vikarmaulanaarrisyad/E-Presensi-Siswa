@@ -15,7 +15,7 @@
                     <div class="i fas fa-bullhorn"></div> <strong>Informasi</strong>
                 </h5>
                 <p class="text-justif">
-                    Kelebihan siswa adalah kelebihan siswa/batas maksimal siswa dalam 1 rombel (SMP = 28 Siswa). Jumlah
+                    Kelebihan siswa adalah kelebihan siswa/batas maksimal siswa dalam 1 rombel (SMP = 35 Siswa). Jumlah
                     siswa adalah jumlah siswa dalam rombel/kapasitas kelas
                 </p>
             </div>
