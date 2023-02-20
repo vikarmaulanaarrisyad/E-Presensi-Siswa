@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Imports\SiswaImport;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -21,13 +23,19 @@ class SiswaController extends Controller
     public function index()
     {
         $tahunPelajaranAktif = $this->tahunPelajaranAktif();
+        $kelas = Kelas::where('academic_id', $tahunPelajaranAktif)->get();
+        $jumlahSiswaTidakAktif = Siswa::where('status', 'tidak aktif')->count();
+        $jumlahSiswaPindahSekolah = Siswa::where('status', 'pindah sekolah')->count();
+        $jumlahSiswaKeluar = Siswa::where('status', 'keluar')->count();
+        $jumlahSiswaAktif = Siswa::active()->where('academic_id', $tahunPelajaranAktif)->count();
 
-        return view('admin.siswa.index', compact('tahunPelajaranAktif'));
+        return view('admin.siswa.index', compact('tahunPelajaranAktif', 'kelas', 'jumlahSiswaTidakAktif', 'jumlahSiswaAktif', 'jumlahSiswaKeluar', 'jumlahSiswaPindahSekolah'));
     }
 
     public function data(Request $request)
     {
         // $query = Siswa::with('class_student')->active()->get();
+
         $tahunPelajaranAktif = $this->tahunPelajaranAktif();
 
         $query = Siswa::with('class_student')
@@ -36,9 +44,11 @@ class SiswaController extends Controller
                 $query->where('class_id', '!=', 0);
             })
             ->where('academic_id', $tahunPelajaranAktif)
+            ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->get();
 
-        // dd($query);
 
         return datatables($query)
             ->addIndexColumn()
@@ -231,5 +241,24 @@ class SiswaController extends Controller
     public function getSiswaId($id)
     {
         return Siswa::findOrfail($id);
+    }
+
+    public function exportPDF(Request $request, $id)
+    {
+        $tahunPelajaranAktif = $this->tahunPelajaranAktif();
+
+        $kelas = Kelas::findOrfail($id);
+
+        $data = Siswa::with('class_student')
+            ->whereHas('class_student', function ($query) use ($kelas) {
+                $query->where('class_id', $kelas->id);
+            })
+            ->where('academic_id', $tahunPelajaranAktif)
+            ->get();
+
+        $pdf = PDF::loadView('admin.siswa.pdf', compact('data', 'kelas', 'tahunPelajaranAktif'))
+            ->setPaper('letter', 'landscape');
+
+        return $pdf->stream('Laporan-data-siswa-' . $kelas->class_name . ' ' . $kelas->class_rombel . '.pdf');
     }
 }

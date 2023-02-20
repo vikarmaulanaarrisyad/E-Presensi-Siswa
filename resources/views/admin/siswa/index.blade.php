@@ -8,36 +8,51 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
-        <div class="row">
-            <div class="col-12">
-                <div class="callout callout-danger">
-                    <h5>Pesan Kesalahan</h5>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    @endif
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <x-card>
                 <x-slot name="header">
                     <div class="btn-group">
-
                         <button onclick="addForm(`{{ route('kesiswaan.store') }}`)" class="btn btn-sm btn-primary"><i
                                 class="fas fa-plus-circle"></i> Tambah Data</button>
 
-                        <button onclick="importData(`{{ route('kesiswaan.import.excel') }}`)"
-                            class="btn btn-success btn-sm">
+                        <button onclick="importData(`{{ route('kesiswaan.import.excel') }}`)" class="btn btn-success btn-sm">
                             <i class="fas fa-file-excel"></i>
-                            Import
-                            Data</button>
+                            Import Data</button>
+
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fas fa-file-pdf"></i>
+                            Export PDf
+                        </button>
+                        <div class="dropdown-menu">
+                            @foreach ($kelas as $item)
+                                <a class="dropdown-item" href="{{ route('kesiswaan.export_pdf', $item->id) }}"
+                                    target="_blank">{{ $item->class_name }}
+                                    {{ $item->class_rombel }}</a>
+                            @endforeach
+                        </div>
                     </div>
                 </x-slot>
+
+                {{-- Filter data --}}
+                <div class="d-flex">
+                    <div class="form-group">
+                        <label for="status2">Status</label>
+                        <select name="status2" id="status2" class="custom-select">
+                            <option disabled selected>Pilih Status</option>
+                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif
+                                ({{ $jumlahSiswaAktif }})</option>
+                            <option value="tidak aktif" {{ request('status') == 'tidak aktif' ? 'selected' : '' }}>Tidak
+                                Aktif ({{ $jumlahSiswaTidakAktif }})</option>
+                            <option value="pindah sekolah" {{ request('status') == 'pindah sekolah' ? 'selected' : '' }}>
+                                Pindah Sekolah ({{ $jumlahSiswaPindahSekolah }})</option>
+                            <option value="keluar" {{ request('status') == 'keluar' ? 'selected' : '' }}>Keluar
+                                ({{ $jumlahSiswaKeluar }})</option>
+                        </select>
+                    </div>
+                </div>
+
                 <x-table>
                     <x-slot name="thead">
                         <tr>
@@ -56,11 +71,12 @@
         </div>
     </div>
     @include('admin.siswa.form')
-    @include('admin.siswa.form_import');
+    @include('admin.siswa.form_import')
 @endsection
 
 @includeIf('layouts.includes.datatable')
 @include('layouts.includes.datepicker')
+@include('layouts.includes.select2')
 
 @push('scripts')
     <script>
@@ -73,7 +89,10 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('kesiswaan.data') }}'
+                url: '{{ route('kesiswaan.data') }}',
+                data: function(d) {
+                    d.status = $('[name=status2]').val();
+                }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -277,5 +296,9 @@
             $(siswaModal).modal('show');
             $(`${siswaModal} .modal-title`).text(title);
         }
+
+        $('[name=status2]').on('change', function() {
+            table.ajax.reload();
+        });
     </script>
 @endpush
