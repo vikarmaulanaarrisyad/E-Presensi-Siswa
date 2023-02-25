@@ -64,6 +64,7 @@ class KelasController extends Controller
             'class_rombel' => 'required|min:1',
             'academic_id' => 'required',
             'capacity' => 'required',
+            'class_level' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -76,6 +77,7 @@ class KelasController extends Controller
             'class_code' => 'class_code_' . rand(99999, 10000),
             'academic_id' => $request->academic_id,
             'capacity' => $request->capacity,
+            'class_level' => $request->class_level,
         ];
 
         $kelas = Kelas::create($data);

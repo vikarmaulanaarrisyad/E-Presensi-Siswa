@@ -6,7 +6,19 @@
     @method('POST')
 
     <input type="hidden" name="academic_id" value="{{ $tahunPelajaranAktif }}">
-
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="form-group">
+                <label for="class_level">Tingkat Kelas</label>
+                <select name="class_level" id="class_level" class="form-control class_level">
+                    <option disabled selected>Pilih Tingkat</option>
+                    <option value="7">Kelas 7</option>
+                    <option value="8">Kelas 8</option>
+                    <option value="9">Kelas 9</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <div class="form-group">
@@ -34,6 +46,8 @@
             </div>
         </div>
     </div>
+
+
 
     <x-slot name="footer">
         <button type="button" onclick="submitForm(this.form)" class="btn btn-sm btn-primary"><i

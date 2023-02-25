@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('classes', function (Blueprint $table) {
+        Schema::create('room', function (Blueprint $table) {
             $table->id();
-            $table->string('class_name');
-            $table->string('class_code');
-            $table->integer('class_level');
+            $table->string('name');
+            $table->enum('status', [1, 2, 3])->comment('1 : digunakan ruang kelas');
+            $table->string('path_image')->nullable();
+
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists('room');
     }
 };

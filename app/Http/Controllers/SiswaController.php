@@ -35,19 +35,28 @@ class SiswaController extends Controller
     public function data(Request $request)
     {
         // $query = Siswa::with('class_student')->active()->get();
-
         $tahunPelajaranAktif = $this->tahunPelajaranAktif();
 
-        $query = Siswa::with('class_student')
-            // ->active()
-            ->whereHas('class_student', function ($query) {
-                $query->where('class_id', '!=', 0);
-            })
-            ->where('academic_id', $tahunPelajaranAktif)
-            ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
-                $query->where('status', $request->status);
-            })
-            ->get();
+        if ($request->status == '' && $request->status != '') {
+            $query = Siswa::with('class_student')
+                ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+                ->where('academic_id', $tahunPelajaranAktif)
+                ->whereDoesntHave('class_student')
+                ->get();
+        } else {
+
+            $query = Siswa::with('class_student')
+                ->whereHas('class_student', function ($query) {
+                    $query->where('class_id', '!=', 0);
+                })
+                ->where('academic_id', $tahunPelajaranAktif)
+                ->when($request->has('status') && $request->status != "", function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+                ->get();
+        }
 
 
         return datatables($query)
@@ -56,6 +65,12 @@ class SiswaController extends Controller
                 return $query->place_birth . ', ' . tanggal_indonesia($query->date_birth);
             })
             ->editColumn('kelas', function ($query) {
+                $class_student = $query->class_student->first();
+
+                if (!$class_student) {
+                    return '<span class="badge badge-warning">Tidak memiliki kelas</span>';
+                }
+
                 return $query->class_student->first()->class_name . ' ' . $query->class_student->first()->class_rombel;
             })
             ->editColumn('umur', function ($query) {

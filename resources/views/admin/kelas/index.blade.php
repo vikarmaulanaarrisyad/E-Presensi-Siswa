@@ -77,6 +77,8 @@
             $(`${modal} .modal-title`).text(title);
             $(`${modal} form`).attr('action', url);
             $(`${modal} [name=_method]`).val('POST');
+            $(`${modal} .class_level`).attr('disabled', false);
+            $(`${modal} .class_level`).attr('readonly', false);
 
             resetForm(`${modal} form`);
         }
@@ -88,6 +90,10 @@
                     $(`${modal} .modal-title`).text(title);
                     $(`${modal} form`).attr('action', url);
                     $(`${modal} [name=_method]`).val('PUT');
+                    $(`${modal} .class_level`).attr('disabled', true);
+                    $(`${modal} .class_level`).attr('readonly', true);
+
+
                     resetForm(`${modal} form`);
                     loopForm(response.data);
                 })

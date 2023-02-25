@@ -41,7 +41,7 @@ class RombelController extends Controller
                 return '-';
             })
             ->editColumn('jumlah_siswa', function ($query) {
-                return $query->class_student->count() . '/'. $query->capacity . ' Siswa';
+                return $query->class_student->count() . '/' . $query->capacity . ' Siswa';
             })
             ->editColumn('kelebihan_siswa', function ($query) {
                 return '-';
@@ -70,7 +70,7 @@ class RombelController extends Controller
             $siswas->update([
                 'academic_id' => $this->tahunPelajaranAktif()
             ]);
-            $kelas->class_student()->attach($siswas);
+            $kelas->class_student()->attach($siswas, ['academic_id' => $siswas['academic_id'], 'tingkat' => $kelas['class_level']]);
         }
 
         return response()->json(['data' => $kelas, 'message' => 'Data siswa berhasil ditambahkan']);

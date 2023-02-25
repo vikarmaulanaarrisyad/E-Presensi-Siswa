@@ -18,7 +18,7 @@
                             src="{{ asset('AdminLTE/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                     </div>
                     <h3 class="profile-username text-center">{{ $siswa->student_name }}</h3>
-                    <p class="text-muted text-center">Kelas 7 A</p>
+                    <p class="text-muted text-center">{{ $siswa->class_student->first()->class_name ?? '' }} {{ $siswa->class_student->first()->class_rombel ?? '' }}</p>
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
                             <b>NISN</b> <a class="float-right">{{ $siswa->student_identification_school }}</a>

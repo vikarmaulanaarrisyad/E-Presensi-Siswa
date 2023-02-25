@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashboardController,
     KelasController,
+    KenaikanSiswaController,
     RombelController,
     SiswaController,
     TahunAjaranController,
@@ -46,7 +47,7 @@ Route::group([
         Route::resource('kesiswaan', SiswaController::class)->except('create', 'edit');
         Route::get('kesiswaan/kesiswaan-detail/{id}', [SiswaController::class, 'detail'])->name('kesiswaan.detail');
         Route::post('/kesiswaan/upload_excel', [SiswaController::class, 'importSiswaExcel'])->name('kesiswaan.import.excel');
-        Route::get('/kesiswaan/export_pdf/{id}',[SiswaController::class, 'exportPDF'])->name('kesiswaan.export_pdf');
+        Route::get('/kesiswaan/export_pdf/{id}', [SiswaController::class, 'exportPDF'])->name('kesiswaan.export_pdf');
 
         // Rombel
         Route::get('rombel/data', [RombelController::class, 'data'])->name('rombel.data');
@@ -55,5 +56,9 @@ Route::group([
         Route::get('/rombel/rombel-detail/{id}', [RombelController::class, 'detail'])->name('rombel.detail');
         Route::post('/rombel/{id}/tambah-siswa/', [RombelController::class, 'siswaStore'])->name('rombel.tambah.siswa');
         Route::delete('/rombel/delete-siswa/{id}', [RombelController::class, 'siswaDestroy'])->name('rombel.siswa.destroy');
+
+        // Kenaikan siswa
+        Route::get('kenaikan-siswa/data', [KenaikanSiswaController::class, 'data'])->name('kenaikan.siswa.data');
+        Route::resource('kenaikan-siswa', KenaikanSiswaController::class);
     });
 });

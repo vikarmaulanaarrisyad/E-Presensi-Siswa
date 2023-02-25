@@ -49,24 +49,101 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('kesiswaan.index') }}"
-                            class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
-                            <i class="nav-icon fas fa-users"></i>
+
+                    {{-- <li class="nav-item {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
+                            <i class="nav-icon fas fa-building"></i>
                             <p>
-                                Data Siswa
+                                Sarana Prasarana
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('rombel.index') }}"
-                            class="nav-link {{ routeActive(['rombel.index', 'rombel.detail']) }}">
-                            <i class="nav-icon fas fa-book"></i>
+                        <ul class="nav nav-treeview"
+                            style="{{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) ? '' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('kesiswaan.index', 'kesiswaan.detail') }}"
+                                    class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Daftar Ruangan</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li> --}}
+
+
+                    <li class="nav-item {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
+                            <i class="nav-icon fas fa-user"></i>
                             <p>
-                                Rombongan Belajar
+                                Siswa
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) ? '' : 'display: none;' }}">
+                            <li class="nav-item">
+                                <a href="{{ route('kesiswaan.index', 'kesiswaan.detail') }}"
+                                    class="nav-link {{ routeActive(['kesiswaan.index', 'kesiswaan.detail']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Daftar Siswa</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Mutasi
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Mutasi Keluar</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Mutasi Masuk</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Akademik
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    <li class="nav-item">
+                                        <a href="{{ route('kenaikan-siswa.index') }}" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Kenaikan Kelas</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Kelulusan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Daftar Alumni</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
+
+
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="nav-icon fas fa-user-friends"></i>
@@ -77,10 +154,20 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('rombel.index') }}"
+                            class="nav-link {{ routeActive(['rombel.index', 'rombel.detail']) }}">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Rombongan Belajar
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="nav-icon fas fa-chalkboard-teacher"></i>
                             <p>
-                                Absensi
+                                Presensi
                             </p>
                         </a>
                     </li>

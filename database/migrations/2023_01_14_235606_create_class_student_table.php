@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
+            $table->unsignedBigInteger('academic_id')->nullable();
+            $table->integer('tingkat')->default(0);
             $table->timestamps();
         });
     }
